@@ -45,8 +45,6 @@ class AcountController extends Controller
         }
     }
 
-
-
     /**
      * Store a newly created resource in storage.
      *
@@ -82,18 +80,6 @@ class AcountController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Acount  $acount
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Acount $acount)
-    {
-        //
-    }
-
-
 
     /**
      * Update the specified resource in storage.
@@ -102,19 +88,27 @@ class AcountController extends Controller
      * @param  \App\Models\Acount  $acount
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Acount $acount)
+    public function updateAmount(Request $request, $id)
     {
-        //
-    }
+        try {
+            $acount = $this->acountRepository->editBalance($id, $request->amount);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Acount  $acount
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Acount $acount)
-    {
-        //
+
+            return response()->json([
+                'error' => null,
+                'ok' => true,
+                'status' => 200,
+                'message' => 'Success',
+                'data' => $acount
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error',
+                'ok' => false,
+                'status' => 500,
+                'message' => 'Ha ocurrido un error',
+                'data' => null
+            ], 500);
+        }
     }
 }
